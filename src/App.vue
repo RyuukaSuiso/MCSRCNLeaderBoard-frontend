@@ -2,17 +2,7 @@
   <nav @keydown.esc="isDrawerOpen = false">
     <div class="nav-inner">
       <div class="logo" @click="backToHome">
-        <svg class="logo-mark" viewBox="0 0 16 16" aria-hidden="true">
-          <rect x="0" y="0" width="16" height="6" fill="#5d9c3c" />
-          <rect x="0" y="6" width="16" height="10" fill="#8a5a32" />
-          <rect x="2" y="6" width="3" height="2" fill="#6d4526" />
-          <rect x="9" y="6" width="4" height="2" fill="#6d4526" />
-          <rect x="4" y="10" width="3" height="2" fill="#6d4526" />
-          <rect x="11" y="11" width="3" height="2" fill="#6d4526" />
-          <rect x="1" y="1" width="3" height="2" fill="#6fbf49" />
-          <rect x="7" y="2" width="4" height="2" fill="#548f36" />
-          <rect x="13" y="1" width="2" height="2" fill="#6fbf49" />
-        </svg>
+        <img class="logo-mark" :src="logoMark" alt="MCSR-CN" />
         <span class="logo-text">MCSR-CN</span>
       </div>
       <!-- 窄屏使用抽屉，为已登录用户的更多入口保留空间。 -->
@@ -148,6 +138,7 @@ import '@/assets/main.css';
 import { ref, onMounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useWindowSize } from '@vueuse/core';
+import logoMark from '@/assets/end-podium.webp';
 // 用户登录控制
 import AuthControl from '@/components/AuthControl.vue';
 import UserPanel from '@/components/UserPanel.vue';
@@ -277,8 +268,8 @@ nav {
 .logo-mark {
   width: 28px;
   height: 28px;
-  border-radius: 4px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  object-fit: contain;
+  filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.4));
 }
 
 .logo-text {
