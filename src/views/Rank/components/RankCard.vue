@@ -24,44 +24,16 @@
         >{{ igt }}</RouterLink
       >
     </div>
+    <div class="cell rta-cell">{{ rta }}</div>
     <div class="cell date-cell">{{ date }}</div>
-    <div class="cell video-cell">
-      <a
-        v-if="videolink"
-        :href="videolink"
-        target="_blank"
-        rel="noopener noreferrer"
-        :aria-label="`${nickname} 的记录视频`"
-        @click.stop.prevent="handleVideoClick"
-        class="video-link"
-      >
-        <SvgIcon name="vedio" color="white"></SvgIcon>
-      </a>
-      <span v-else class="no-video">暂无视频</span>
-    </div>
-    <details class="mobile-details" @click.stop>
-      <summary>日期与视频 <span class="details-chevron" aria-hidden="true">⌄</span></summary>
-      <div class="details-content">
-        <span class="record-date"
-          >记录时间 <span>{{ date }}</span></span
-        >
-        <a
-          v-if="videolink"
-          :href="videolink"
-          target="_blank"
-          rel="noopener noreferrer"
-          :aria-label="`${nickname} 的记录视频`"
-          @click.prevent="handleVideoClick"
-          >观看视频 ↗</a
-        >
-        <span v-else class="no-video">暂无视频</span>
-      </div>
-    </details>
+    <div class="cell version-cell">{{ version }}</div>
+    <div class="cell meta-cell">{{ difficulty }}</div>
+    <div class="cell meta-cell">{{ f3 }}</div>
+    <div class="cell meta-cell">{{ mods }}</div>
   </div>
 </template>
 
 <script setup lang="ts">
-import SvgIcon from '@/components/icons/index.vue';
 import { RouterLink } from 'vue-router';
 // 导入排名图标
 import firstPlaceIcon from '@/assets/icons/firstplace.png';
@@ -76,27 +48,31 @@ interface Props {
   userId: number;
   igt: string;
   date: string;
-  videolink: string;
+  version: string;
   runId: number;
   is_new_record: boolean;
+  // 后端暂未提供这些字段，显示占位符，等数据接入后直接透传
+  rta?: string;
+  difficulty?: string;
+  f3?: string;
+  mods?: string;
 }
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  rta: '—',
+  difficulty: '—',
+  f3: '—',
+  mods: '—',
+});
 
 // 定义 emits
 const emit = defineEmits<{
   click: [runId: number];
-  videoClick: [url: string];
 }>();
 
 // 处理点击事件
 const handleClick = () => {
   emit('click', props.runId);
-};
-
-// 处理视频点击事件
-const handleVideoClick = () => {
-  emit('videoClick', props.videolink);
 };
 
 // 获取排名图标
@@ -120,15 +96,21 @@ const isNewRecord = computed(() => {
 <style scoped>
 .stats {
   cursor: pointer;
-  transition: all 0.2s ease;
-  border-bottom: 1px solid #444;
-  display: flex;
+  transition: background-color 0.2s ease;
+  border-bottom: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: 64px minmax(0, 2fr) minmax(120px, 1fr) 108px 104px 84px 68px 56px 72px;
   position: relative;
+  color: var(--text-secondary);
+}
+
+.stats:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.02);
 }
 
 .stats:hover {
-  background-color: #3a3a3a;
-  transform: translateY(-1px);
+  background-color: var(--hovercolor);
+  color: #fff;
 }
 
 .stats:last-child {
@@ -136,8 +118,8 @@ const isNewRecord = computed(() => {
 }
 
 .cell {
-  flex: 1;
-  padding: 16px 8px;
+  min-width: 0;
+  padding: 14px 8px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -147,7 +129,7 @@ const isNewRecord = computed(() => {
   position: absolute;
   left: 0;
   top: 0;
-  color: #00bcd4;
+  color: #4caf50;
   font-weight: 600;
   font-size: 0.8em;
   transform: rotate(-45deg);
@@ -160,12 +142,16 @@ const isNewRecord = computed(() => {
 
 .rank-cell {
   font-weight: 600;
-  color: #00bcd4;
+  color: var(--accent-bright);
+  font-variant-numeric: tabular-nums;
 }
 
 .player-cell {
   font-weight: 500;
-  font-size: 1.2em;
+  font-size: 1.1em;
+  color: #fff;
+  justify-content: flex-start;
+  padding-left: 12px;
 }
 
 .player-link {
@@ -179,59 +165,50 @@ const isNewRecord = computed(() => {
 }
 
 .stats a:hover {
-  color: #00bcd4;
+  color: #4caf50;
 }
 
-.stats a:focus-visible,
-.mobile-details summary:focus-visible {
-  outline: 2px solid #00bcd4;
+.stats a:focus-visible {
+  outline: 2px solid #4caf50;
   outline-offset: 3px;
   border-radius: 4px;
 }
 
-.new-record-badge,
-.mobile-details {
+.new-record-badge {
   display: none;
 }
 
 .igt-cell {
   font-family: 'Courier New', monospace;
   font-weight: 600;
-  font-size: 1.2em;
+  font-size: 1.1em;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.rta-cell {
+  font-family: 'Courier New', monospace;
+  font-size: 0.95em;
+  color: var(--text-secondary);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
 
 .date-cell {
-  color: #ccc;
+  color: var(--text-secondary);
   font-size: 0.9em;
 }
 
-.video-cell {
-  width: 60px;
+.version-cell {
+  color: var(--text-secondary);
+  font-size: 0.9em;
+  font-variant-numeric: tabular-nums;
 }
 
-.no-video {
-  color: #ccc;
-  font-size: 12px;
-}
-
-.video-link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  background-color: rgba(0, 188, 212, 0.1);
-  border: 1px solid rgba(0, 188, 212, 0.3);
-  border-radius: 8px;
-  transition: all 0.2s ease;
-}
-
-.video-link:hover {
-  background-color: rgba(0, 188, 212, 0.2);
-  border-color: rgba(0, 188, 212, 0.5);
-  transform: scale(1.05);
+.meta-cell {
+  color: var(--text-secondary);
+  font-size: 0.9em;
 }
 
 @media (max-width: 780px) {
@@ -268,77 +245,23 @@ const isNewRecord = computed(() => {
   }
 
   .date-cell,
-  .video-cell,
+  .rta-cell,
+  .version-cell,
+  .meta-cell,
   .new-record-cell {
     display: none;
   }
 
   .new-record-badge {
     display: inline-flex;
-    color: #00bcd4;
+    color: #4caf50;
     font-size: 10px;
     font-weight: 600;
-  }
-
-  .mobile-details {
-    display: block;
-    grid-column: 1 / -1;
-    min-width: 0;
-    font-size: 12px;
-    text-align: left;
-    cursor: auto;
-  }
-
-  .mobile-details summary {
-    min-height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 8px;
-    color: #ccc;
-    cursor: pointer;
-    list-style: none;
-  }
-
-  .mobile-details summary::-webkit-details-marker {
-    display: none;
-  }
-
-  .details-chevron {
-    font-size: 16px;
-  }
-
-  .mobile-details[open] .details-chevron {
-    transform: rotate(180deg);
-  }
-
-  .details-content {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 4px 16px;
-    padding: 4px 0 12px;
-    color: #ccc;
-  }
-
-  .record-date {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px 8px;
-  }
-
-  .details-content a {
-    display: inline-flex;
-    align-items: center;
-    min-height: 40px;
-    color: #00bcd4;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .stats,
-  .video-link {
+  .stats {
     transition: none;
   }
 }

@@ -392,8 +392,8 @@ onMounted(() => {
 .form-input:focus,
 .form-select:focus {
   outline: none;
-  border-color: #00bcd4;
-  box-shadow: 0 0 0 2px rgba(0, 188, 212, 0.1);
+  border-color: #4caf50;
+  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.1);
 }
 
 .igt-inputs {
@@ -430,8 +430,8 @@ onMounted(() => {
 
 .form-textarea:focus {
   outline: none;
-  border-color: #00bcd4;
-  box-shadow: 0 0 0 2px rgba(0, 188, 212, 0.1);
+  border-color: #4caf50;
+  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.1);
 }
 
 .form-actions {
@@ -442,7 +442,7 @@ onMounted(() => {
 }
 
 .submit-button {
-  background: linear-gradient(135deg, #00bcd4, #0097a7);
+  background: linear-gradient(135deg, #4caf50, #388e3c);
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -454,9 +454,9 @@ onMounted(() => {
 }
 
 .submit-button:hover {
-  background: linear-gradient(135deg, #00acc1, #00838f);
+  background: linear-gradient(135deg, #43a047, #2e7d32);
   transform: translateY(-2px);
-  box-shadow: 0 4px 20px rgba(0, 188, 212, 0.3);
+  box-shadow: 0 4px 20px rgba(76, 175, 80, 0.3);
 }
 
 .submit-button:active {
@@ -472,7 +472,7 @@ onMounted(() => {
 }
 
 .submit-button.submitting {
-  background: linear-gradient(135deg, #0097a7, #00695f);
+  background: linear-gradient(135deg, #388e3c, #1b5e20);
   cursor: wait;
 }
 
