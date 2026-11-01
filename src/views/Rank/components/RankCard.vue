@@ -24,12 +24,8 @@
         >{{ igt }}</RouterLink
       >
     </div>
-    <div class="cell rta-cell">{{ rta }}</div>
     <div class="cell date-cell">{{ date }}</div>
     <div class="cell version-cell">{{ version }}</div>
-    <div class="cell meta-cell">{{ difficulty }}</div>
-    <div class="cell meta-cell">{{ f3 }}</div>
-    <div class="cell meta-cell">{{ mods }}</div>
   </div>
 </template>
 
@@ -51,19 +47,9 @@ interface Props {
   version: string;
   runId: number;
   is_new_record: boolean;
-  // 后端暂未提供这些字段，显示占位符，等数据接入后直接透传
-  rta?: string;
-  difficulty?: string;
-  f3?: string;
-  mods?: string;
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  rta: '—',
-  difficulty: '—',
-  f3: '—',
-  mods: '—',
-});
+const props = defineProps<Props>();
 
 // 定义 emits
 const emit = defineEmits<{
@@ -99,7 +85,7 @@ const isNewRecord = computed(() => {
   transition: background-color 0.2s ease;
   border-bottom: 1px solid var(--border);
   display: grid;
-  grid-template-columns: 64px minmax(0, 2fr) minmax(120px, 1fr) 108px 104px 84px 68px 56px 72px;
+  grid-template-columns: 64px minmax(0, 2fr) minmax(130px, 1.1fr) 108px 88px;
   position: relative;
   color: var(--text-secondary);
 }
@@ -187,14 +173,6 @@ const isNewRecord = computed(() => {
   white-space: nowrap;
 }
 
-.rta-cell {
-  font-family: 'Courier New', monospace;
-  font-size: 0.95em;
-  color: var(--text-secondary);
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-}
-
 .date-cell {
   color: var(--text-secondary);
   font-size: 0.9em;
@@ -204,11 +182,6 @@ const isNewRecord = computed(() => {
   color: var(--text-secondary);
   font-size: 0.9em;
   font-variant-numeric: tabular-nums;
-}
-
-.meta-cell {
-  color: var(--text-secondary);
-  font-size: 0.9em;
 }
 
 @media (max-width: 780px) {
@@ -245,9 +218,7 @@ const isNewRecord = computed(() => {
   }
 
   .date-cell,
-  .rta-cell,
   .version-cell,
-  .meta-cell,
   .new-record-cell {
     display: none;
   }

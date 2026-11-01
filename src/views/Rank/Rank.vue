@@ -79,12 +79,8 @@
               <div class="rank-cell">#</div>
               <div class="player-cell">玩家</div>
               <div class="igt-cell">IGT</div>
-              <div class="rta-cell">真实时间</div>
               <div class="date-cell">日期</div>
               <div class="version-cell">版本</div>
-              <div class="meta-cell">难度</div>
-              <div class="meta-cell">F3</div>
-              <div class="meta-cell">模组</div>
             </div>
             <div class="leaderboard-body">
               <div v-if="statsdata.length === 0" class="empty-state" role="status">
@@ -582,7 +578,7 @@ watch([pages, isLoading], () => {
 .leaderboard-head {
   background: rgba(0, 0, 0, 0.25);
   display: grid;
-  grid-template-columns: 64px minmax(0, 2fr) minmax(120px, 1fr) 108px 104px 84px 68px 56px 72px;
+  grid-template-columns: 64px minmax(0, 2fr) minmax(130px, 1.1fr) 108px 88px;
   font-size: 13px;
   height: 44px;
   font-weight: 600;
@@ -700,9 +696,7 @@ watch([pages, isLoading], () => {
   }
 
   .leaderboard-head .date-cell,
-  .leaderboard-head .rta-cell,
-  .leaderboard-head .version-cell,
-  .leaderboard-head .meta-cell {
+  .leaderboard-head .version-cell {
     display: none;
   }
 }

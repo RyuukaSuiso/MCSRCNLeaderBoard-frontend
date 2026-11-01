@@ -55,12 +55,6 @@ const router = createRouter({
       name: 'announcements',
       component: () => import('../views/Announcements.vue'),
     },
-    // 论坛
-    {
-      path: '/forum',
-      name: 'forum',
-      component: () => import('../views/Forum.vue'),
-    },
     // 资源
     {
       path: '/resources',

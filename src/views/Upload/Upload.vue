@@ -69,44 +69,6 @@
         </div>
 
         <div class="form-group">
-          <label class="form-label" for="rta-minute">真实时间</label>
-          <div class="time-inputs">
-            <input
-              class="form-input time-input"
-              type="number"
-              id="rta-minute"
-              v-model="rtaMinute"
-              placeholder="0"
-              min="0"
-              autocomplete="off"
-            />
-            <span class="time-separator">分</span>
-            <input
-              class="form-input time-input"
-              type="number"
-              id="rta-second"
-              v-model="rtaSecond"
-              placeholder="0"
-              min="0"
-              max="59"
-              autocomplete="off"
-            />
-            <span class="time-separator">秒</span>
-            <input
-              class="form-input time-input"
-              type="number"
-              id="rta-millisecond"
-              v-model="rtaMillisecond"
-              placeholder="0"
-              min="0"
-              max="999"
-              autocomplete="off"
-            />
-            <span class="time-separator">毫秒</span>
-          </div>
-        </div>
-
-        <div class="form-group">
           <label class="form-label" for="date">日期</label>
           <input class="form-input" type="date" id="date" v-model="date" autocomplete="off" />
         </div>
@@ -127,27 +89,6 @@
           <label class="form-label" for="subversion">版本</label>
           <select class="form-select" id="subversion" v-model="subversion">
             <option v-for="v in subversionOptions" :key="v" :value="v">{{ v }}</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label" for="difficulty">难度</label>
-          <select class="form-select" id="difficulty" v-model="difficulty">
-            <option v-for="d in DIFFICULTY_OPTIONS" :key="d" :value="d">{{ d }}</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label" for="f3">F3</label>
-          <select class="form-select" id="f3" v-model="f3">
-            <option v-for="f in F3_OPTIONS" :key="f" :value="f">{{ f }}</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label" for="mods">模组情况</label>
-          <select class="form-select" id="mods" v-model="mods">
-            <option v-for="m in MODS_OPTIONS" :key="m" :value="m">{{ m }}</option>
           </select>
         </div>
 
@@ -202,15 +143,9 @@ const type = ref('RSG');
 const igtMinute = ref(0);
 const igtSecond = ref(0);
 const igtMillisecond = ref(0);
-const rtaMinute = ref<number | ''>('');
-const rtaSecond = ref<number | ''>('');
-const rtaMillisecond = ref<number | ''>('');
 const date = ref(new Date().toISOString().split('T')[0]);
 const videoLink = ref('');
 const subversion = ref('1.16');
-const difficulty = ref('简单');
-const f3 = ref('F3');
-const mods = ref('Vanilla');
 const remarks = ref('');
 
 // 版本范围选项按种子类型区分：
@@ -282,10 +217,6 @@ const VERSION_BY_RANGE: Record<string, string[]> = {
   '1.16+': [...VERSIONS_1_16_TO_1_19, ...VERSIONS_1_20_PLUS],
 };
 
-const DIFFICULTY_OPTIONS = ['简单', '普通', '困难', '极限'];
-const F3_OPTIONS = ['F3', '无F3'];
-const MODS_OPTIONS = ['Vanilla', 'Modded', 'OptiFine'];
-
 const subversionOptions = computed(() => VERSION_BY_RANGE[version.value] ?? []);
 
 // 数据库 runs.version 存代表版本，提交时由版本范围（必要时结合实际版本）换算。
@@ -342,12 +273,6 @@ const formatTime = (minute: unknown, second: unknown, millisecond: unknown) => {
 
 const igt = computed(() => formatTime(igtMinute.value, igtSecond.value, igtMillisecond.value));
 
-// 真实时间选填：三个输入全部为空时提交空字符串
-const rta = computed(() => {
-  if (rtaMinute.value === '' && rtaSecond.value === '' && rtaMillisecond.value === '') return '';
-  return formatTime(rtaMinute.value, rtaSecond.value, rtaMillisecond.value);
-});
-
 const checkRequiredInfo = () => {
   if (version.value === '') {
     showErrorNotification('版本范围不能为空');
@@ -385,14 +310,10 @@ const insertRun = async () => {
     version: representativeVersion.value,
     type: type.value,
     igt: igt.value,
-    rta: rta.value,
     date: date.value.replace(/-/g, '/'),
     videolink: sanitizedVideoLink,
     remarks: sanitizedRemarks,
     subversion: sanitizeTextInput(subversion.value.trim()),
-    difficulty: sanitizeTextInput(difficulty.value.trim()),
-    f3: sanitizeTextInput(f3.value.trim()),
-    mods: sanitizeTextInput(mods.value.trim()),
     status: 'pending',
   });
   if (error) {
@@ -415,15 +336,9 @@ const clearForm = () => {
   igtMinute.value = 0;
   igtSecond.value = 0;
   igtMillisecond.value = 0;
-  rtaMinute.value = '';
-  rtaSecond.value = '';
-  rtaMillisecond.value = '';
   date.value = new Date().toISOString().split('T')[0];
   videoLink.value = '';
   subversion.value = subversionOptions.value[0] ?? '';
-  difficulty.value = '简单';
-  f3.value = 'F3';
-  mods.value = 'Vanilla';
   remarks.value = '';
 };
 

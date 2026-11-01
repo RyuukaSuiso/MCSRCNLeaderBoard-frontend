@@ -37,20 +37,8 @@
             <span class="card-value">{{ versionRange }}</span>
           </div>
           <div class="info-card">
-            <span class="card-label">难度</span>
-            <span class="card-value muted">—</span>
-          </div>
-          <div class="info-card">
-            <span class="card-label">F3</span>
-            <span class="card-value muted">—</span>
-          </div>
-          <div class="info-card">
             <span class="card-label">版本</span>
             <span class="card-value">{{ runInfo.version }}</span>
-          </div>
-          <div class="info-card">
-            <span class="card-label">模组情况</span>
-            <span class="card-value muted">—</span>
           </div>
         </section>
 
@@ -63,10 +51,6 @@
           <div class="info-card">
             <span class="card-label">IGT（游戏内时间）</span>
             <span class="card-value igt-value">{{ runInfo.igt }}</span>
-          </div>
-          <div class="info-card">
-            <span class="card-label">真实时间</span>
-            <span class="card-value muted">—</span>
           </div>
           <div class="info-card">
             <span class="card-label">日期</span>
